@@ -6,14 +6,14 @@ import { logout } from '../../store/actions/auth';
 import classes from './Layout.module.css';
 
 const Layout = (props) => {
-  const [openSideDrawer, updateOpenSideDrawer] = useState({openSideDrawer: false})
+  const [sideDrawerOpen, setSideDrawerOpen] = useState(false)
   const toggleSideDrawer = () => {
-    updateOpenSideDrawer({openSideDrawer: !openSideDrawer.openSideDrawer})
+    setSideDrawerOpen(!sideDrawerOpen)
   }
 
   return <>
     <Toolbar toggleSideDrawer={toggleSideDrawer} auth={props.auth} logout={props.logout}/>
-    <SideDrawer show={openSideDrawer.openSideDrawer} toggle={toggleSideDrawer} auth={props.auth} logout={props.logout}/>
+    <SideDrawer show={sideDrawerOpen} toggle={toggleSideDrawer} auth={props.auth} logout={props.logout}/>
     <main className={classes.Content}>
       {props.children}
     </main>
