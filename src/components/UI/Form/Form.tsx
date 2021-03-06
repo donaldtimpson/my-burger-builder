@@ -1,12 +1,19 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import Button from '../Button/Button'
 import Input from '../Input/Input'
 import classes from './Form.module.css'
 
-function Form(props) {
-  const [formData, updateFormData] = useState(props.form)
+export interface IFormProps {
+  className?: string | null;
+  form: any;
+  submitTitle: string;
+  onSubmit: (formData: any) => void;
+}
+
+function Form({ className, form, submitTitle, onSubmit }: IFormProps) {
+  const [formData, updateFormData] = useState(form)
   
-  const checkValidity = (value, rules) => {
+  const checkValidity = (value: string, rules: any) => {
     let isValid = true;
     let invalidText = null;
     if (rules.required) {
@@ -28,7 +35,7 @@ function Form(props) {
     return {isValid: isValid, invalidText: invalidText}
   }
 
-  const inputChangedHandler = (inputIdentifier, event) => {
+  const inputChangedHandler = (inputIdentifier: string, event: ChangeEvent<HTMLSelectElement>) => {
     const state = { ...formData }
     const stateElement = { ...state[inputIdentifier] }
     stateElement.value = event.target.value
@@ -42,9 +49,9 @@ function Form(props) {
     updateFormData(state)
   }
   
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = (event: any) => {
     event.preventDefault()
-    props.onSubmit(formData)
+    onSubmit(formData)
   }
 
   const formElements = []
@@ -69,7 +76,7 @@ function Form(props) {
           invalidText={element.config.invalidText}
           onChange={(event) => {inputChangedHandler(element.id, event)}}/>
       })}
-      <Button buttonType="Success" disabled={!formValid}>{props.submitTitle}</Button>
+      <Button buttonType="Success" disabled={!formValid}>{submitTitle}</Button>
     </form>
   </div>
 }
